@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Test Request</title>
+
+    <!-- update the version number as needed -->
+    <script defer src="/__/firebase/9.6.5/firebase-app-compat.js"></script>
+    <!-- include only the Firebase features as you need -->
+    <script defer src="/__/firebase/9.6.5/firebase-auth-compat.js"></script>
+    <script defer src="/__/firebase/9.6.5/firebase-database-compat.js"></script>
+    <script defer src="/__/firebase/9.6.5/firebase-firestore-compat.js"></script>
+    <script defer src="/__/firebase/9.6.5/firebase-functions-compat.js"></script>
+    <script defer src="/__/firebase/9.6.5/firebase-messaging-compat.js"></script>
+    <script defer src="/__/firebase/9.6.5/firebase-storage-compat.js"></script>
+    <script defer src="/__/firebase/9.6.5/firebase-analytics-compat.js"></script>
+    <script defer src="/__/firebase/9.6.5/firebase-remote-config-compat.js"></script>
+    <script defer src="/__/firebase/9.6.5/firebase-performance-compat.js"></script>
+    <!-- 
+      initialize the SDK after all desired features are loaded, set useEmulator to false
+      to avoid connecting the SDK to running emulators.
+    -->
+    <script defer src="/__/firebase/init.js?useEmulator=true"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+    rel="stylesheet">
+    <link rel="stylesheet" href="./css/styles.css">
+
+  </head>
+  <body>
+    <div class="new-request">
+      <div class="modal">
+        <h2>Request a Tutorial</h2>
+        <form>
+          <input type="text" name="request" placeholder="Request...">
+          <button>Submit Request</button>
+          <p class="error"></p>
+        </form>
+      </div>
+    </div>
+
+
+    <header>
+      <nav>
+        <a class="add-request">add request</a>
+        <a class="sign-out">sign out</a>
+      </nav>
+    </header>
+
+    <section class="content">
+      <h1>Tutorial Requests</h1>
+      <ul class="request-list"> 
+        <li>
+          <span class="text">Laravel 6 tutorial</span>
+          <div>
+            <span class="votes">125</span>
+            <i class="material-icons upvote">arrow_upward</i>
+          </div>
+        </li>
+      </ul>
+    </section>
+    <script type="module">
+      // Import the functions you need from the SDKs you need
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.5/firebase-app.js";
+      import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.6.5/firebase-analytics.js";
+      // TODO: Add SDKs for Firebase products that you want to use
+      // https://firebase.google.com/docs/web/setup#available-libraries
+    
+      // Your web app's Firebase configuration
+      // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+      const firebaseConfig = {
+        apiKey: "AIzaSyAqbZildUNrv-rFZHCPnSbpO0jmjH1VfqU",
+        authDomain: "mineros-36233.firebaseapp.com",
+        databaseURL: "https://mineros-36233-default-rtdb.firebaseio.com",
+        projectId: "mineros-36233",
+        storageBucket: "mineros-36233.appspot.com",
+        messagingSenderId: "852167180691",
+        appId: "1:852167180691:web:2a2bb5cbd22f77188a2866",
+        measurementId: "G-2B04T3FNEB"
+      };
+    
+      // Initialize Firebase
+      const app = initializeApp(firebaseConfig);
+      const analytics = getAnalytics(app);
+    </script>
+    <script src="./js/app.js"></script>
+  </body>
+</html>
