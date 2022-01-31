@@ -11,6 +11,7 @@ const loginForm = document.querySelector('.login')
 const SignOut = document.querySelector('.sign-out') 
 var auth = getAuth() 
 
+
 // toggle auth modals
 authSwichLinks.forEach((link)=>{
     link.addEventListener('click', ()=>{

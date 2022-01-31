@@ -56,7 +56,7 @@
     </header>
 
     <section class="content">
-      <h1>Tutorial Requests</h1>
+      <!-- <h1>Tutorial Requests</h1>
       <ul class="request-list"> 
         <li>
           <span class="text">Laravel 6 tutorial</span>
@@ -66,11 +66,38 @@
           </div>
         </li>
         <button class="call">Say hello</button>
-      </ul>
+      </ul> -->
+
+      <h1>Load the events</h1>
+      <form>
+        <p>Title 
+          <input type="text" id="title" name="title" placeholder="title..">
+        </p>
+        <p>Date start
+          <input type="date" id="eventStart" name="eventStart" >
+        </p>
+        <p>Date end
+          <input type="date" id="eventEnd" name="eventEnd" >
+        </p>
+        <button class="add">Add event</button>
+        <button class="update">Update event</button>
+        <button class="remove">Remove event</button>
+        <p class="error"></p>
+      </form>
+
+
+      <div>
+        <p class="title"></p>
+        <p class="eventStart"></p>
+        <p class="eventEnd"></p>
+      </div>
+
+
+
     </section>
 
     <script type="module" src="./js/init.js"></script>
-    <script src="./js/app.js"></script>
+    <script type="module" src="./js/app.js"></script>
     <script type="module" src="./js/auth.js"></script>
   </body>
 </html>

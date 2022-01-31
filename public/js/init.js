@@ -1,6 +1,6 @@
 
  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.4/firebase-app.js";
-
+ import { getDatabase} from "https://www.gstatic.com/firebasejs/9.6.4/firebase-database.js"  
  const firebaseConfig = {
    apiKey: "AIzaSyAqbZildUNrv-rFZHCPnSbpO0jmjH1VfqU",
    authDomain: "mineros-36233.firebaseapp.com",
@@ -14,4 +14,6 @@
 
  // Initialize Firebase
  const app = initializeApp(firebaseConfig);
+ const database = getDatabase(app);
 
+export{database}
