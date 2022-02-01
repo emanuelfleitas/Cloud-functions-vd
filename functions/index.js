@@ -9,25 +9,24 @@ exports.randomNumber = functions.https.onRequest((request, response)=>{
   response.send(number.toString());
 }); 
 
-// http request redirect
-//  exports.toTheDojo = functions.https.onRequest((request, response)=>{
-//   response.redirect("https://www.thenetninja.co.uk");
-// }); 
 
 // http callable functions
-exports.sayHello = functions.https.onCall(data=>{
-  const name = data.name;
-  return `Hello, ${name}`;
+// exports.sayHello = functions.https.onCall(data=>{
+//   const name = data.name;
+//   return `Hello, ${name}`;
+// }); 
+
+exports.getEventtt = functions.https.onCall(data=>{
+  const title = data.title;
+  const description = data.description;
+
+  return `Event data:  ${title}, ${description}`;
 }); 
+
 
 // get new user sign up
 exports.newUserSignup = functions.auth.user().onCreate((user)=>{
   console.log("user created ", user.email, user.uid); 
-  // for background trigger you must return a value/promise
-  // return admin.firestore().collection("users").doc(user.uid).set({
-  //   email: user.email,
-  //   upvotedOn: [],
-  // });
 });
 
 // get delete user sign up
@@ -61,16 +60,5 @@ exports.newUserSignup = functions.auth.user().onCreate((user)=>{
 //   });
 // });
 
-exports.makeUppercase = functions.database.ref('/messages/{pushId}/original')
-  .onCreate((snapshot, context) => {
-    // Grab the current value of what was written to the Realtime Database.
-    const original = snapshot.val();
-    functions.logger.log('Uppercasing', context.params.pushId, original);
-    const uppercase = original.toUpperCase();
-    // You must return a Promise when performing asynchronous tasks inside a Functions such as
-    // writing to the Firebase Realtime Database.
-    // Setting an "uppercase" sibling in the Realtime Database returns a Promise.
-    return snapshot.ref.parent.child('uppercase').set(uppercase);
-});
 
 

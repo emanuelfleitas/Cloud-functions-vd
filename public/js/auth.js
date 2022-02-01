@@ -1,7 +1,4 @@
-
 import {GoogleAuthProvider,signOut, getAuth,createUserWithEmailAndPassword,signInWithEmailAndPassword,onAuthStateChanged ,signInWithPopup} from "https://www.gstatic.com/firebasejs/9.6.4/firebase-auth.js"  
-
-
 
 const authSwichLinks = document.querySelectorAll('.switch')
 const authModals = document.querySelectorAll('.auth .modal')
@@ -9,31 +6,28 @@ const authWrapper = document.querySelector('.auth')
 const registerForm = document.querySelector('.register')
 const loginForm = document.querySelector('.login')
 const SignOut = document.querySelector('.sign-out') 
-var auth = getAuth() 
 const google = document.querySelector('.google')
-
-
-
+const auth = getAuth();
+const provider = new GoogleAuthProvider();
 
 google.addEventListener('click',()=>{
-    const provider = new GoogleAuthProvider();
+    // console.log("auth cuando entro por google" + auth);
+    // provider.addScope('https://www.googleapis.com/auth/contacts.readonly');
+    // provider.addScope('https://www.googleapis.com/auth/calendar');
+    // provider.addScope('https://www.googleapis.com/auth/calendar.events');
     signInWithPopup(auth, provider)
-  .then((result) => {
+    .then((result) => {
     // This gives you a Google Access Token. You can use it to access the Google API.
     const credential = GoogleAuthProvider.credentialFromResult(result);
-    const token = credential.accessToken;
-    // The signed-in user info.
+    console.log(credential);
+    // const token = credential.accessToken;
+    // const refresh_token = credential.refresh_token;
     const user = result.user;
-    // ...
+    console.log(user);
+
   }).catch((error) => {
-    // Handle Errors here.
-    const errorCode = error.code;
-    const errorMessage = error.message;
-    // The email of the user's account used.
-    const email = error.email;
-    // The AuthCredential type that was used.
-    const credential = GoogleAuthProvider.credentialFromError(error);
-    // ...
+    console.log(credential);
+    console.log(error.message);
   });
 })
 
@@ -95,9 +89,12 @@ onAuthStateChanged(auth,(user) => {
 
 //auth sign out 
 SignOut.addEventListener('click',()=>{
-    signOut(auth).then(() => {
-        console.log("salio con exito");
+    signOut(auth).then(()=>{
+        console.log(auth);
+        console.log("salio");
     }).catch((error) => {
-        console.log("error: ",error.message);
-    });
+        console.log("no salio");
+    })
 })
+
+
