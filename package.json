@@ -1,5 +1,8 @@
 {
   "devDependencies": {
     "eslint": "^8.8.0"
+  },
+  "dependencies": {
+    "googleapis": "^94.0.0"
   }
 }

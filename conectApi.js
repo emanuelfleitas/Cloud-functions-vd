@@ -7,14 +7,14 @@ const { OAuth2 } = google.auth
 
 /* datos obtenidos del cloud google api https://console.cloud.google.com/apis/credentials?project=vue-firebase-auth-d83ae */
 const oAuth2Client = new OAuth2(
-    '737496671906-829chukedls50hbin4s6crkjfcdnbnpp.apps.googleusercontent.com',
-    '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'
+    '852167180691-kj030si3j33p9qmdrn5n7rnkbldr0cs4.apps.googleusercontent.com',
+    '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'
 )
 
 
 /* refresh token obtenido en https://developers.google.com/oauthplayground/ */
 oAuth2Client.setCredentials({
-    refresh_token: '1//04ZodMZ_ZOBzGCgYIARAAGAQSNwF-L9IrJMw-QzzCjRcQPKcH37nB1oHUHa7dg1sYTOplq-pFH3oFR3V-t_zu7NwnIcCSK-xB3Vs'
+    refresh_token: '1//041_JH3rP0GrxCgYIARAAGAQSNwF-L9IrO976pUj9MaBeC4mLAo9dilsdnjPCw0ho_ub_iAyk87VvbWvfAO-N2PKR1MtzIPRYk_4'
 })
 
 const calendar = google.calendar({
@@ -22,16 +22,16 @@ const calendar = google.calendar({
 })
 
 const eventStartTime = new Date()
-eventStartTime.setDate(eventStartTime.getDay() + 4)
+eventStartTime.setDate(eventStartTime.getDay() + 6)
 
 const eventEndTime = new Date()
-eventEndTime.setDate(eventEndTime.getDay() + 5)
-eventEndTime.setMinutes(eventEndTime.getMinutes() + 45)
+eventEndTime.setDate(eventEndTime.getDay() + 8)
+
 
 const event = {
-    summary:'Meet with David',
+    summary:'Turno con la doctora Silvia',
     location:'H3500AUE, Juan Domingo Perón 201-299, H3500AUE Resistencia, Chaco',
-    description:'Meet with david to talk about the new client project and how to add the google calendar api',
+    description:'Turno para consultar sobre en lugares realiza operaciones',
     start:{
         dateTime: eventStartTime,
         timeZone: 'America/Argentina/Cordoba',
@@ -61,3 +61,4 @@ calendar.freebusy.query({
     }) 
     return console.log('sorry im busy');
 })
+
