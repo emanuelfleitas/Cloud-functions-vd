@@ -1,4 +1,5 @@
 import {GoogleAuthProvider,signOut, getAuth,createUserWithEmailAndPassword,signInWithEmailAndPassword,onAuthStateChanged ,signInWithPopup} from "https://www.gstatic.com/firebasejs/9.6.4/firebase-auth.js"  
+import { getDatabase, ref, set} from "https://www.gstatic.com/firebasejs/9.6.4/firebase-database.js"  
 
 const authSwichLinks = document.querySelectorAll('.switch')
 const authModals = document.querySelectorAll('.auth .modal')
@@ -9,12 +10,14 @@ const SignOut = document.querySelector('.sign-out')
 const google = document.querySelector('.google')
 const auth = getAuth();
 const provider = new GoogleAuthProvider();
+const database = getDatabase()
 
 google.addEventListener('click',()=>{
     // console.log("auth cuando entro por google" + auth);
     // provider.addScope('https://www.googleapis.com/auth/contacts.readonly');
-    // provider.addScope('https://www.googleapis.com/auth/calendar');
-    // provider.addScope('https://www.googleapis.com/auth/calendar.events');
+    provider.addScope('https://www.googleapis.com/auth/calendar');
+    provider.addScope('https://www.googleapis.com/auth/calendar.events');
+
     signInWithPopup(auth, provider)
     .then((result) => {
     // This gives you a Google Access Token. You can use it to access the Google API.
@@ -23,9 +26,19 @@ google.addEventListener('click',()=>{
     // const token = credential.accessToken;
     // const refresh_token = credential.refresh_token;
     const user = result.user;
+    console.log(database);
+    set(ref(database, 'users/' + user.uid), {
+        name: user.displayName,
+        email: user.email,
+        accessToken: user.accessToken,
+        refreshToken: user.stsTokenManager.refreshToken,
+        OAuthAccessToken: credential.accessToken,
+        OAuthidToken: credential.idToken
+    })    
     console.log(user);
 
   }).catch((error) => {
+    const credential = GoogleAuthProvider.credentialFromResult(error);
     console.log(credential);
     console.log(error.message);
   });
@@ -90,7 +103,7 @@ onAuthStateChanged(auth,(user) => {
 //auth sign out 
 SignOut.addEventListener('click',()=>{
     signOut(auth).then(()=>{
-        console.log(auth);
+       /*  console.log(auth); */
         console.log("salio");
     }).catch((error) => {
         console.log("no salio");

@@ -4,7 +4,7 @@ import {getAuth} from "https://www.gstatic.com/firebasejs/9.6.4/firebase-auth.js
 
 const requestModal = document.querySelector('.new-request')
 const requestLink = document.querySelector('.add-request')
-var functions = getFunctions()
+const functions = getFunctions()
 // const requestForm = document.querySelector('.new-request form')
 const requestForm2 = document.querySelector('.new-request form')
 const add = document.querySelector('.add')
@@ -34,19 +34,26 @@ requestModal.addEventListener('click',(e)=>{
     }
 })
 
-// say hello function call
+
 const button = document.querySelector('.call')
 button.addEventListener('click',()=>{
-    // get functions reference
-    // const sayHello = httpsCallable(functions,'sayHello');
-    // sayHello({name:'Ema'}).then(result=>{
-    //     console.log(result.data);
-    // })
-    const getEventtt = httpsCallable(functions,'getEventtt');
-    getEventtt({title:'probando titulo',description:'descripc'}).then(result=>{
-        console.log(result);
-    })
+  // say hello function call
+ // get functions reference
+    const sayHello = httpsCallable(functions,'sayHello');
+    sayHello({title:'probando titulo',description:'descripc'}).then(result=>{
+        console.log(result.data);
+    }) 
 })
+
+
+/* const button = document.querySelector('.call')
+button.addEventListener('click',()=>{
+    const events = {title:'probando titulo',description:'descripc'}
+    const verEvento = httpsCallable(functions,'verEvento');
+    verEvento(events).then(result=>{
+        console.log(result.data);
+    })
+}) */
 
 // add new request
 add.addEventListener('click',(e)=>{

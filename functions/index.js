@@ -1,33 +1,56 @@
+
 const functions = require("firebase-functions");
 const admin = require("firebase-admin");
 admin.initializeApp();
 
 //  http request 1
-exports.randomNumber = functions.https.onRequest((request, response)=>{
+/* exports.randomNumber = functions.https.onRequest((request, response)=>{
   const number = Math.round(Math.random() * 100);
   console.log(number);
   response.send(number.toString());
 }); 
+ */
 
+/* exports.seeData = functions.https.onRequest((request, response)=>{
+  const number = Math.round(Math.random() * 100);
+  console.log(number);
+  response.send(number.toString());
+}); 
+ */
 
 // http callable functions
-// exports.sayHello = functions.https.onCall(data=>{
-//   const name = data.name;
-//   return `Hello, ${name}`;
-// }); 
+ exports.sayHello = functions.https.onCall(data=>{
+   const name = data;
+   return `Hello, ${name.title}, ${name.description}`;
+ }); 
 
-exports.getEventtt = functions.https.onCall(data=>{
-  const title = data.title;
-  const description = data.description;
-
-  return `Event data:  ${title}, ${description}`;
+exports.verEvento = functions.https.onCall((data)=>{
+  const title = data.title ;
+  return `Event data:  ${title}`;
 }); 
 
 
 // get new user sign up
 exports.newUserSignup = functions.auth.user().onCreate((user)=>{
   console.log("user created ", user.email, user.uid); 
+  /* admin.firestore().collection("users").doc(user.uid).set({
+      email: user.email,
+      
+  }); */
+  admin.database().ref(("users/" + user.uid),{
+    email: user.email,
+  })
+
+  /*set(ref(database, 'users/' + user.uid), {
+    email: user.email,
+    accessToken: user.accessToken,
+  })*/
+
 });
+
+
+
+
 
 // get delete user sign up
 // exports.userDeleted = functions.auth.user().onDelete((user)=>{
