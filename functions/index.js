@@ -1,79 +1,86 @@
 
+const { google } = require("googleapis")
+const { OAuth2 } = google.auth
 const functions = require("firebase-functions");
 const admin = require("firebase-admin");
 admin.initializeApp();
+const oAuth2Client = new OAuth2(
+  "852167180691-kj030si3j33p9qmdrn5n7rnkbldr0cs4.apps.googleusercontent.com",
+  "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"
+)
+oAuth2Client.setCredentials({
+  refresh_token: "1//04wrO9iXdwIjtCgYIARAAGAQSNwF-L9IrAnruPAwcY7dufZ2-ni5mkyfgkKgAR1iS69Ae63QYRPJCVxoMCvrGO08tw8HrcSJ2aZE"
+})
+const auth = oAuth2Client
+// const calendar = google.calendar({
+//   version: "v3",auth: oAuth2Client
+// })
 
-//const {google} = require("googleapis");
-//const calendar = google.calendar("v3");
-
-// var eventData = {
-//   'summary': 'turno con el Dr.ALbert',
-//   'location': '800 Howard St., San Francisco, CA 94103',
-//   'description': 'revision general de salud',
-//   'start': {
-//     'dateTime': '2022-02-1T09:00:00-07:00',
-//     'timeZone': 'America/Argentina/Cordoba',
-//   },
-//   'end': {
-//     'dateTime': '2022-02-2T17:00:00-07:00',
-//     'timeZone': 'America/Argentina/Cordoba',
-//   },
-//   'recurrence': [
-//     'RRULE:FREQ=DAILY;COUNT=2'
-//   ],
-//   'attendees': [
-//     {'email': 'lpage@example.com'},
-//     {'email': 'sbrin@example.com'},
-//   ],
-//   'reminders': {
-//     'useDefault': false,
-//     'overrides': [
-//       {'method': 'email', 'minutes': 24 * 60},
-//       {'method': 'popup', 'minutes': 10},
-//     ],
-//   },
-// };
 
 // http callable functions
  exports.sayHello = functions.https.onCall((data)=>{
 
-    var accessToken = data.accessToken
-    var uid = data.uid
-    var idEvent = data.eventId
+    console.log(auth._clientId);
+    let summary = data.summary
+    // crearCalendario(summary)
 
-    console.log("accesstoken: ",accessToken);
-    console.log("Uid: ",uid);
-    console.log("eventID: ",idEvent);
-    var valores_snapshot = []
+    // var accessToken = data.accessToken
+    // var uid = data.uid
+    // var idEvent = data.eventId
 
-    admin.database().ref("/events").once("value",(snapshot)=>{
-      valores_snapshot = snapshot.val()
+    // console.log("accesstoken: ",accessToken);
+    // console.log("Uid: ",uid);
+    // console.log("eventID: ",idEvent);
+    // var valores_snapshot = []
+
+    // admin.database().ref("/events").once("value",(snapshot)=>{
+    //   valores_snapshot = snapshot.val()
       
-      console.log(snapshot.val());
-    })
+    //   console.log(snapshot.val());
+    // })
 
-    // Attach an asynchronous callback to read the data at our posts reference
-   /*  ref.on('value', (snapshot) => {
-      console.log(snapshot.val());
-    }, (errorObject) => {
-      console.log('The read failed: ' + errorObject.name);
-    }); */
 
-    // Retrieve new posts as they are added to our database
-/*   ref.on('child_added', (snapshot, prevChildKey) => {
-    const newPost = snapshot.val();
-    console.log('Author: ' + newPost.author);
-    console.log('Title: ' + newPost.title);
-    console.log('Previous Post ID: ' + prevChildKey);
-  }); */
-  
-   return valores_snapshot;
+   return summary;
  }); 
 
 // get new user sign up
 exports.newUserSignup = functions.auth.user().onCreate((user)=>{
   console.log("user created ", user.email, user.uid); 
 });
+
+
+// function crearCalendario(data) {
+
+//   // Acquire an auth client, and bind it to all future calls
+//   const authClient = auth;
+//   google.options({auth: authClient});
+
+
+//   // create new calendar
+//   const res =  calendar.calendars.insert({
+//     // Request body metadata
+//     requestBody: {
+//       summary: data, // required
+//       timezone: "America/Argentina/Cordoba", // optional
+//       conferenceProperties: {
+//         "allowedConferenceSolutionTypes": [
+//          "hangoutsMeet"
+//         ]
+//       }
+//     }
+//   });
+// }
+
+
+
+
+
+
+
+
+
+
+
 
 // This example assumes an HTTP call
 // exports.addToCalendar = functions.https.onRequest((req, res) => {
@@ -173,3 +180,57 @@ exports.newUserSignup = functions.auth.user().onCreate((user)=>{
 
 
 
+//const {google} = require("googleapis");
+//const calendar = google.calendar("v3");
+
+// var eventData = {
+//   'summary': 'turno con el Dr.ALbert',
+//   'location': '800 Howard St., San Francisco, CA 94103',
+//   'description': 'revision general de salud',
+//   'start': {
+//     'dateTime': '2022-02-1T09:00:00-07:00',
+//     'timeZone': 'America/Argentina/Cordoba',
+//   },
+//   'end': {
+//     'dateTime': '2022-02-2T17:00:00-07:00',
+//     'timeZone': 'America/Argentina/Cordoba',
+//   },
+//   'recurrence': [
+//     'RRULE:FREQ=DAILY;COUNT=2'
+//   ],
+//   'attendees': [
+//     {'email': 'lpage@example.com'},
+//     {'email': 'sbrin@example.com'},
+//   ],
+//   'reminders': {
+//     'useDefault': false,
+//     'overrides': [
+//       {'method': 'email', 'minutes': 24 * 60},
+//       {'method': 'popup', 'minutes': 10},
+//     ],
+//   },
+// };
+
+
+// main().catch(e => {
+//   console.error(e);
+//   throw e;
+// });
+
+
+
+    // Attach an asynchronous callback to read the data at our posts reference
+   /*  ref.on('value', (snapshot) => {
+      console.log(snapshot.val());
+    }, (errorObject) => {
+      console.log('The read failed: ' + errorObject.name);
+    }); */
+
+    // Retrieve new posts as they are added to our database
+/*   ref.on('child_added', (snapshot, prevChildKey) => {
+    const newPost = snapshot.val();
+    console.log('Author: ' + newPost.author);
+    console.log('Title: ' + newPost.title);
+    console.log('Previous Post ID: ' + prevChildKey);
+  }); */
+  

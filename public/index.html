@@ -59,17 +59,17 @@
     </header>
 
     <section class="content">
-      <h1>Tutorial Requests</h1>
-      <ul class="request-list"> 
-        <!-- <li>
-          <span class="text">Laravel 6 tutorial</span>
-          <div>
-            <span class="votes">125</span>
-            <i class="material-icons upvote">arrow_upward</i>
-          </div>
-        </li> -->
-        <button class="call">send event</button>
-      </ul>
+
+      <h1>Create calendar</h1>
+      <form>
+        <p>Summary
+          <input type="text"  class="summary" name="summary" >
+        </p>
+       
+        <button class="create">Create</button>
+        <p class="error"></p>
+      </form>
+
 
       <h1>Load the events</h1>
       <form>
@@ -90,8 +90,6 @@
         <button class="remove">Remove event</button>
         <p class="error"></p>
       </form>
-
-
       <div>
         <p class="title"></p>
         <p class="eventStart"></p>
@@ -99,6 +97,10 @@
         <p class="description"></p>
       </div>
 
+      <h1>Send event loaded</h1>
+      <ul class="request-list"> 
+        <button class="call">send event</button>
+      </ul>
 
 
     </section>

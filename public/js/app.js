@@ -2,9 +2,6 @@ import { getFunctions, httpsCallable } from "https://www.gstatic.com/firebasejs/
 import { getDatabase, ref, set ,onValue,push,child,update,remove} from "https://www.gstatic.com/firebasejs/9.6.4/firebase-database.js"  
 import {getAuth} from "https://www.gstatic.com/firebasejs/9.6.4/firebase-auth.js"  
 
-// const { getDatabase } = require('firebase-admin/database');
-
-
 
 const requestModal = document.querySelector('.new-request')
 const requestLink = document.querySelector('.add-request')
@@ -18,6 +15,9 @@ var auth = getAuth()
 const database = getDatabase()
 
 
+const Summary = document.querySelector('.summary')
+const Create = document.querySelector('.create')
+
 const Title = document.getElementById('title')
 const EventStart = document.getElementById('eventStart')
 const EventEnd = document.getElementById('eventEnd')
@@ -30,7 +30,6 @@ const description = document.querySelector('.description')
 
 var pushed = ""
 
-
 requestLink.addEventListener('click',()=>{
     requestModal.classList.add('open')
 })
@@ -42,49 +41,44 @@ requestModal.addEventListener('click',(e)=>{
 })
 
 
+Create.addEventListener('click',(e)=>{
+    e.preventDefault()
+    pushed = push(child(ref(database), 'calendars')).key
+    console.log(pushed);
+
+    set(ref(database, 'calendars/'+ pushed ), {
+        uid:auth.currentUser.uid,
+        summary: Summary.value,
+    })
+})
 
 const button = document.querySelector('.call')
 button.addEventListener('click',()=>{
-  // say hello function call
- // get functions reference
+
     // const sayHello = httpsCallable(functions,'sayHello');
-    // sayHello({title:'probando titulo',description:'descripc'}).then(result=>{
-    //     console.log(result.data);
+
+    // let accessToken = auth.currentUser.accessToken
+    // let uid = auth.currentUser.uid
+    // let eventId = "MuvSBYJppk9s7GJoEIB"
+
+    // sayHello({accessToken ,uid,eventId}).then(result=>{
+    //     console.log(result);
     // }) 
+    let summary = "calendarios pepess"
 
     const sayHello = httpsCallable(functions,'sayHello');
-    // let events = {
-    //     'summary': 'meet prueba',
-    //     'description': 'prueba',
-    //     'start': {
-    //         'dateTime': '2022-02-1T09:00:00-07:00',
-    //         'timeZone': 'America/Argentina/Cordoba',
-    //     },
-    //     'end': {
-    //         'dateTime': '2022-02-3T17:00:00-07:00',
-    //         'timeZone': 'America/Argentina/Cordoba',
-    //     }}
-
-
-    let accessToken = auth.currentUser.accessToken
-    let uid = auth.currentUser.uid
-    let eventId = "MuvSBYJppk9s7GJoEIB"
-
-    sayHello({accessToken ,uid,eventId}).then(result=>{
+    sayHello({summary}).then(result=>{
         console.log(result);
     }) 
-    
 
+    console.log("en prueba");
 
 })
-
-
 
 // add new request
  add.addEventListener('click',(e)=>{
     e.preventDefault();
     console.log(database);
-   
     pushed = push(child(ref(database), 'events')).key
     console.log(pushed);
 
@@ -96,7 +90,6 @@ button.addEventListener('click',()=>{
         eventEnd: EventEnd.value.toString(),
         description: Description.value
     })
-
     var data = ""
     const titleRef = ref(database,'events/'+ pushed );
     onValue(titleRef,(snapshot) => {
@@ -137,3 +130,21 @@ Remove.addEventListener('click',(e)=>{
 //     console.log('child added !');
 // })
 
+    // let events = {
+    //     'summary': 'meet prueba',
+    //     'description': 'prueba',
+    //     'start': {
+    //         'dateTime': '2022-02-1T09:00:00-07:00',
+    //         'timeZone': 'America/Argentina/Cordoba',
+    //     },
+    //     'end': {
+    //         'dateTime': '2022-02-3T17:00:00-07:00',
+    //         'timeZone': 'America/Argentina/Cordoba',
+    //     }}
+
+  // say hello function call
+ // get functions reference
+    // const sayHello = httpsCallable(functions,'sayHello');
+    // sayHello({title:'probando titulo',description:'descripc'}).then(result=>{
+    //     console.log(result.data);
+    // }) 
