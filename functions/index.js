@@ -36,9 +36,7 @@ admin.initializeApp();
 
 // http callable functions
  exports.sayHello = functions.https.onCall((data)=>{
-  //  var accessToken = data.accessToken;
-  //  var eventData = data.events;
-   
+
     var accessToken = data.accessToken
     var uid = data.uid
     var idEvent = data.eventId
@@ -46,16 +44,30 @@ admin.initializeApp();
     console.log("accesstoken: ",accessToken);
     console.log("Uid: ",uid);
     console.log("eventID: ",idEvent);
+    var valores_snapshot = []
 
+    admin.database().ref("/events").once("value",(snapshot)=>{
+      valores_snapshot = snapshot.val()
+      
+      console.log(snapshot.val());
+    })
 
-    database.ref("/events/"+ idEvent).on("value", (snapshot) => {
+    // Attach an asynchronous callback to read the data at our posts reference
+   /*  ref.on('value', (snapshot) => {
       console.log(snapshot.val());
     }, (errorObject) => {
-      console.log("The read failed: " + errorObject.name);
-    });
+      console.log('The read failed: ' + errorObject.name);
+    }); */
 
-
-   return "funciona";
+    // Retrieve new posts as they are added to our database
+/*   ref.on('child_added', (snapshot, prevChildKey) => {
+    const newPost = snapshot.val();
+    console.log('Author: ' + newPost.author);
+    console.log('Title: ' + newPost.title);
+    console.log('Previous Post ID: ' + prevChildKey);
+  }); */
+  
+   return valores_snapshot;
  }); 
 
 // get new user sign up
