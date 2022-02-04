@@ -1,3 +1,4 @@
+/* eslint-disable */
 
 const { google } = require("googleapis")
 const { OAuth2 } = google.auth
@@ -9,44 +10,136 @@ const oAuth2Client = new OAuth2(
   "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"
 )
 oAuth2Client.setCredentials({
-  refresh_token: "1//04wrO9iXdwIjtCgYIARAAGAQSNwF-L9IrAnruPAwcY7dufZ2-ni5mkyfgkKgAR1iS69Ae63QYRPJCVxoMCvrGO08tw8HrcSJ2aZE"
+  refresh_token: "1//04L3cpJEL0eQ1CgYIARAAGAQSNwF-L9Iremy1P8_D9DtIkao1i34dnDI8U6KD0gxrLMLUGeSBRsSCJYiob2MRbxtG43dwY1MfH6I"
 })
 const auth = oAuth2Client
-// const calendar = google.calendar({
-//   version: "v3",auth: oAuth2Client
-// })
+const calendar = google.calendar({
+  version: "v3",auth: oAuth2Client
+})
+
+const calendarId = "66pu08ukqvd1q7c32fn00b6gc8@group.calendar.google.com"
+// const eventoNuevo = {}
+
+const event = {
+  "summary": "Turno dr Laos",
+  "description": "revision",
+  "start": {
+      "dateTime": "2022-02-7T17:00:00-07:00",
+      "timeZone": "America/Argentina/Cordoba"
+  },
+  "end": {
+      "dateTime": "2022-02-7T17:00:00-07:00",
+      "timeZone": "America/Argentina/Cordoba"
+  }
+}
+
+exports.sendGoogleManual = functions.runWith({ memory: "4GB", timeoutSeconds: 540 }).https.onRequest( (req, res) => {
+
+  try {
+      // await migraSegsExpirados(false,false,'20210602');
+    
+    
+      console.log("probando enviar");
+
+      const response = calendar.events.insert({
+        auth: auth,
+        calendarId: calendarId,
+        resource: event
+      });
+      response.then((rest) =>{
+        let idEvent = rest.data.id
+        // rest.data.id // event id
+        // rest.data.creator.email // email del creador del calendario
+        // rest.data.description  //description
+        // rest.data.summary // summary
+        // rest.data.Authorization // Authorization
+        // rest.data.email // calendarID
+        // rest.data.displayName //nombre del calendario
+      
+        admin.database().ref('eventsGoogle/').push().set({
+          idEvent:idEvent,
+          description:rest.data.description ,
+          title:rest.data.summary,
+          eventEnd: rest.data.dateTime,
+          eventStart: rest.data.dateTime,
+          uid:rest.data.creator.email 
+        })
+
+        console.log(rest.data.id);
+      }).catch((error) => {
+        console.log(error);
+      })
+     
+
+      return res.status(200).json("terminado");
+  } catch (error) {
+      console.log(error);
+      return res.status(200).json(error.message);
+  }
+});
 
 
 // http callable functions
- exports.sayHello = functions.https.onCall((data)=>{
-
-    console.log(auth._clientId);
-    let summary = data.summary
-    // crearCalendario(summary)
-
-    // var accessToken = data.accessToken
-    // var uid = data.uid
-    // var idEvent = data.eventId
-
-    // console.log("accesstoken: ",accessToken);
-    // console.log("Uid: ",uid);
-    // console.log("eventID: ",idEvent);
-    // var valores_snapshot = []
-
-    // admin.database().ref("/events").once("value",(snapshot)=>{
-    //   valores_snapshot = snapshot.val()
-      
-    //   console.log(snapshot.val());
-    // })
-
-
-   return summary;
+ exports.enviarEvento = functions.https.onCall((data)=>{
+    console.log(data.description);
+    let event = {
+        "summary": data.summary,
+        "description": data.description,
+        "start": {
+            "dateTime": data.startDate,
+            "timeZone": "America/Argentina/Cordoba"
+        },
+        "end": {
+            "dateTime": data.endDate,
+            "timeZone": "America/Argentina/Cordoba"
+        }
+    };
+    let resultado = insertEvent(event,data.idCalendar,auth);
+    return resultado
  }); 
+
+
 
 // get new user sign up
 exports.newUserSignup = functions.auth.user().onCreate((user)=>{
   console.log("user created ", user.email, user.uid); 
 });
+
+const insertEvent =  (event,idCalendar,auth) => {
+    
+  try {
+      let response = calendar.events.insert({
+        auth: auth,
+        calendarId: idCalendar,
+        resource: event
+      });
+      if (response["status"] == 200 && response["statusText"] == "OK") {
+          return 1;
+      } else {
+          return 0;
+      }
+    } 
+  catch (error) {
+        console.log(error);
+        return 0;
+    }
+};
+
+
+
+// exports.sendGoogleManual = functions.runWith({ memory: "4GB", timeoutSeconds: 540 }).https.onRequest(async (req, res) => {
+//   try {
+//       await migraSegsExpirados(false,false,'20210602');
+//       console.log("probando enviar");
+//       return req.status(200).json("terminado");
+//   } catch (error) {
+//       console.log(error);
+//       return res.status(200).json(error.message);
+//   }
+// });
+
+
+
 
 
 // function crearCalendario(data) {
@@ -70,16 +163,6 @@ exports.newUserSignup = functions.auth.user().onCreate((user)=>{
 //     }
 //   });
 // }
-
-
-
-
-
-
-
-
-
-
 
 
 // This example assumes an HTTP call
@@ -133,7 +216,7 @@ exports.newUserSignup = functions.auth.user().onCreate((user)=>{
 
 
 // Alternative: Realtime DB trigger
-// exports.addToCalendar = functions.database.ref('/addToCalendar/{pushId}')
+// exports.addToCalendar = functions.database.ref("/addToCalendar/{pushId}')
 //   .onWrite((event) => {
 //     const data = event.data.val();
 //     return addToCalendar(data.eventData, data.token)
@@ -234,3 +317,22 @@ exports.newUserSignup = functions.auth.user().onCreate((user)=>{
     console.log('Previous Post ID: ' + prevChildKey);
   }); */
   
+
+    // admin.database().ref("/events").once("value",(snapshot)=>{
+    //   valores_snapshot = snapshot.val()
+      
+    //   console.log(snapshot.val());
+    // })
+
+
+
+    // crearCalendario(summary)
+
+    // var accessToken = data.accessToken
+    // var uid = data.uid
+    // var idEvent = data.eventId
+
+    // console.log("accesstoken: ",accessToken);
+    // console.log("Uid: ",uid);
+    // console.log("eventID: ",idEvent);
+    // var valores_snapshot = []

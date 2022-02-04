@@ -22,13 +22,15 @@ const Title = document.getElementById('title')
 const EventStart = document.getElementById('eventStart')
 const EventEnd = document.getElementById('eventEnd')
 const Description = document.getElementById('description')
+const IDcalendar = document.getElementById('idcalendar')
 
 const title = document.querySelector('.title')
 const eventStart = document.querySelector('.eventStart')
 const eventEnd = document.querySelector('.eventEnd')
 const description = document.querySelector('.description')
+const idcalendar = document.querySelector('.idcalendar')
 
-var pushed = ""
+
 
 requestLink.addEventListener('click',()=>{
     requestModal.classList.add('open')
@@ -43,7 +45,7 @@ requestModal.addEventListener('click',(e)=>{
 
 Create.addEventListener('click',(e)=>{
     e.preventDefault()
-    pushed = push(child(ref(database), 'calendars')).key
+    const pushed = push(child(ref(database), 'calendars')).key
     console.log(pushed);
 
     set(ref(database, 'calendars/'+ pushed ), {
@@ -54,51 +56,73 @@ Create.addEventListener('click',(e)=>{
 
 const button = document.querySelector('.call')
 button.addEventListener('click',()=>{
-
     // const sayHello = httpsCallable(functions,'sayHello');
-
     // let accessToken = auth.currentUser.accessToken
     // let uid = auth.currentUser.uid
     // let eventId = "MuvSBYJppk9s7GJoEIB"
-
     // sayHello({accessToken ,uid,eventId}).then(result=>{
     //     console.log(result);
     // }) 
-    let summary = "calendarios pepess"
-
-    const sayHello = httpsCallable(functions,'sayHello');
-    sayHello({summary}).then(result=>{
-        console.log(result);
-    }) 
-
-    console.log("en prueba");
-
+    // let summary = "calendarios pepess"
+    // const sayHello = httpsCallable(functions,'sayHello');
+    // sayHello({summary}).then(result=>{
+    //     console.log(result);
+    // }) 
+     console.log("en prueba");
 })
 
 // add new request
  add.addEventListener('click',(e)=>{
     e.preventDefault();
     console.log(database);
-    pushed = push(child(ref(database), 'events')).key
-    console.log(pushed);
+    // const pushed = push(child(ref(database), 'eventsGoogle')).key
+    // console.log(pushed);
+
+    const evento = {
+        uid:auth.currentUser.uid,
+        summary: Title.value,
+        startDate: "2022-02-2T17:00:00-07:00",
+        endDate: "2022-02-2T17:00:00-07:30",
+        description: Description.value,
+        idCalendar: IDcalendar.value
+    }
+
+    
+    const enviarEvento = httpsCallable(functions,'enviarEvento');
+    enviarEvento(evento).then(result=>{
+        console.log(result);
+        // set(ref(database, 'eventsGoogle/'+ pushed ), {
+            //     idEvent:result,
+            //     uid:auth.evento.uid,
+            //     summary: evento.summary,
+            //     startDate: "2022-02-2T17:00:00-07:00",
+            //     endDate: "2022-02-2T17:00:00-07:30",
+            //     description: evento.description,
+            //     idCalendar: evento.idCalendar
+            // })
+    }) 
+
 
     // console.log(auth.currentUser.accessToken);
-    set(ref(database, 'events/'+ pushed ), {
-        uid:auth.currentUser.uid,
-        title: Title.value,
-        eventStart: EventStart.value.toString(),
-        eventEnd: EventEnd.value.toString(),
-        description: Description.value
-    })
-    var data = ""
-    const titleRef = ref(database,'events/'+ pushed );
-    onValue(titleRef,(snapshot) => {
-        data = snapshot.val();
-        title.textContent ="Title: " + data.title;
-        eventStart.textContent ="Event Start: " + data.eventStart;
-        eventEnd.textContent ="Event End: " + data.eventEnd;
-        description.textContent = "Description "+ data.description;
-    })
+    // set(ref(database, 'eventsGoogle/'+ pushed ), {
+    //     idEvent:"asdasdasdasdasdasd",
+    //     uid:auth.currentUser.uid,
+    //     summary: Title.value,
+    //     startDate: "2022-02-2T17:00:00-07:00",
+    //     endDate: "2022-02-2T17:00:00-07:30",
+    //     description: Description.value,
+    //     idCalendar: IDcalendar.value
+    // })
+    // var data = ""
+    // const titleRef = ref(database,'eventsGoogle/'+ pushed );
+    // onValue(titleRef,(snapshot) => {
+    //     data = snapshot.val();
+    //     title.textContent ="Title: " + data.summary;
+    //     eventStart.textContent ="Event Start: " + data.startDate;
+    //     eventEnd.textContent ="Event End: " + data.endDate;
+    //     description.textContent = "Description "+ data.description;
+    //     idcalendar.textContent = "IdCalendar "+data.idCalendar;
+    // })
     requestForm2.reset();
 })
 

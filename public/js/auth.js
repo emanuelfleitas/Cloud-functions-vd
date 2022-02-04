@@ -13,11 +13,8 @@ const provider = new GoogleAuthProvider();
 const database = getDatabase()
 
 google.addEventListener('click',()=>{
-    // console.log("auth cuando entro por google" + auth);
-    // provider.addScope('https://www.googleapis.com/auth/contacts.readonly');
     provider.addScope('https://www.googleapis.com/auth/calendar');
     provider.addScope('https://www.googleapis.com/auth/calendar.events');
-
     signInWithPopup(auth, provider)
     .then((result) => {
     // This gives you a Google Access Token. You can use it to access the Google API.

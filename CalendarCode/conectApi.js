@@ -14,7 +14,7 @@ const oAuth2Client = new OAuth2(
 
 /* refresh token obtenido en https://developers.google.com/oauthplayground/ */
 oAuth2Client.setCredentials({
-    refresh_token: '1//041_JH3rP0GrxCgYIARAAGAQSNwF-L9IrO976pUj9MaBeC4mLAo9dilsdnjPCw0ho_ub_iAyk87VvbWvfAO-N2PKR1MtzIPRYk_4'
+    refresh_token: '1//04L3cpJEL0eQ1CgYIARAAGAQSNwF-L9Iremy1P8_D9DtIkao1i34dnDI8U6KD0gxrLMLUGeSBRsSCJYiob2MRbxtG43dwY1MfH6I'
 })
 
 const calendar = google.calendar({
