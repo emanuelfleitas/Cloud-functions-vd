@@ -79,6 +79,59 @@ exports.sendGoogleManual = functions.runWith({ memory: "4GB", timeoutSeconds: 54
 });
 
 
+
+/* exports.sendUpdateGoogleManual = functions.runWith({ memory: "4GB", timeoutSeconds: 540 }).https.onRequest( (req, res) => {
+
+  try {
+      // await migraSegsExpirados(false,false,'20210602');
+    
+    
+      console.log("probando enviar");
+
+      const response = calendar.events.update({
+        auth: auth,
+        calendarId: calendarId,
+        resource: event
+      });
+      response.then((rest) =>{
+        let idEvent = rest.data.id
+        // rest.data.id // event id
+        // rest.data.creator.email // email del creador del calendario
+        // rest.data.description  //description
+        // rest.data.summary // summary
+        // rest.data.Authorization // Authorization
+        // rest.data.email // calendarID
+        // rest.data.displayName //nombre del calendario
+      
+        admin.database().ref('eventsGoogle/').push().set({
+          idEvent:idEvent,
+          description:rest.data.description ,
+          title:rest.data.summary,
+          eventEnd: rest.data.dateTime,
+          eventStart: rest.data.dateTime,
+          uid:rest.data.creator.email 
+        })
+
+        console.log(rest.data.id);
+      }).catch((error) => {
+        console.log(error);
+      })
+     
+
+      return res.status(200).json("terminado");
+  } catch (error) {
+      console.log(error);
+      return res.status(200).json(error.message);
+  }
+}); */
+
+
+
+
+
+
+
+
 // http callable functions
  exports.enviarEvento = functions.https.onCall((data)=>{
     console.log(data.description);
